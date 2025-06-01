@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/models/expenses_model.dart';
 
@@ -13,6 +14,7 @@ class _AddExpense extends State<AddExpense> {
   var enteredTitle = '';
   var enterAmount;
   // var date = DateTime.now();
+  Catagory _SelectedCatagory = Catagory.leisure;
 
   void saveTitleInput(String inputValue) {
     enteredTitle = inputValue;
@@ -69,20 +71,35 @@ class _AddExpense extends State<AddExpense> {
           ),
           Row(
             children: [
-              DropdownButton(
-                items:
-                    Catagory.values
-                        .map(
-                          (e) => DropdownMenuItem(
-                            value: e,
-                            child: Text(e.name.toString()),
-                          ),
-                        )
-                        .toList(),
-                onChanged: (value) {
-                  print(value);
-                },
+              Container(
+                margin: EdgeInsets.symmetric(horizontal: 16),
+                width: 150,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: DropdownButton(
+                  isExpanded: true,
+                  value: _SelectedCatagory,
+                  items:
+                      Catagory.values
+                          .map(
+                            (category) => DropdownMenuItem(
+                              value: category,
+                              child: Text(category.name.toUpperCase()),
+                            ),
+                          )
+                          .toList(),
+                  onChanged: (value) {
+                    setState(() {
+                      if (value == null) {
+                        return;
+                      }
+                      _SelectedCatagory = value;
+                    });
+                  },
+                ),
               ),
+              Spacer(),
               ElevatedButton(
                 onPressed: () {
                   Navigator.pop(context);
